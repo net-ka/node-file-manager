@@ -1,5 +1,5 @@
 import {Transform} from "stream";
-import {goUp, openDir} from "./operations/index.js";
+import {goUp, openDir, list} from "./operations/index.js";
 
 export const handleOperations = new Transform({
     async transform(chunk, encoding, callback) {
@@ -18,6 +18,9 @@ export const handleOperations = new Transform({
                 case 'cd': {
                     await openDir(args);
                     break;
+                }
+                case 'ls': {
+                    await list();
                 }
             }
         } catch (err) {

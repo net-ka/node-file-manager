@@ -18,3 +18,19 @@ export const openDir = async pathData => {
         throw new Error("Such path doesn't exist!");
     }
 }
+
+export const list = async () => {
+    const path = process.cwd();
+
+    const list = await fs.readdir(path);
+
+    if (!list.length) {
+        throw new Error('Empty directory!');
+    } else {
+        const visualData = list.map(item => ({
+            Name: item,
+            Type: item.startsWith('.') ? 'file' : 'directory',
+        }))
+        console.table(visualData);
+    }
+}

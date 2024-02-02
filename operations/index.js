@@ -1,1 +1,1 @@
-export { goUp, openDir } from './nwd.js';
+export { goUp, openDir, list } from './nwd.js';
