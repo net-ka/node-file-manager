@@ -27,10 +27,29 @@ export const list = async () => {
     if (!list.length) {
         throw new Error('Empty directory!');
     } else {
+        list.sort((a, b) => {
+            if (a.toLowerCase() > b.toLowerCase()) {
+                return 1;
+            }
+            if (a.toLowerCase() < b.toLowerCase()) {
+                return -1;
+            }
+            return 0;
+        }).sort((a, b) => {
+            if (a.split('.').length > 1) {
+                return 1;
+            }
+            if (b.split('.').length > 1) {
+                return -1;
+            }
+            return 0;
+        });
+
         const visualData = list.map(item => ({
             Name: item,
-            Type: item.startsWith('.') ? 'file' : 'directory',
-        }))
+            Type: item.split('.').length > 1 ? 'file' : 'directory',
+        }));
+
         console.table(visualData);
     }
 }
