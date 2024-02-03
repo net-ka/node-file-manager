@@ -7,6 +7,7 @@ import {
     add,
     rename,
     copy,
+    move,
 } from "./operations/index.js";
 
 export const handleOperations = new Transform({
@@ -71,6 +72,15 @@ export const handleOperations = new Transform({
                 case 'cp': {
                     try {
                         await copy(...args);
+                    } catch (e) {
+                        throw new Error(e);
+                    }
+
+                    break;
+                }
+                case 'mv': {
+                    try {
+                        await move(...args);
                     } catch (e) {
                         throw new Error(e);
                     }

@@ -81,7 +81,7 @@ export const copy = async (fileCurrentPath, pathToNewDirectory) => {
         const isDestinationFilePathExist = await isPathExist(destinationFilePath);
 
         if (isDestinationFilePathExist) {
-            reject('impossible to copy, such file already exists in a given directory!');
+            reject('Impossible to copy, such file already exists in a given directory!');
         } else {
             const readStream = fs.createReadStream(getPath(fileCurrentPath));
             const writeStream = fs.createWriteStream(getPath(destinationFilePath));
@@ -98,6 +98,46 @@ export const copy = async (fileCurrentPath, pathToNewDirectory) => {
             copyStream.on('finish', () => {
                 console.log('File was copied successfully!')
                 resolve();
+            });
+        }
+    });
+}
+
+export const move = async (fileCurrentPath, pathToNewDirectory) => {
+    return new Promise(async (resolve, reject) => {
+        if (!fileCurrentPath || !pathToNewDirectory) {
+            reject(`Provide a current path of entity and a move path for it!`);
+            return;
+        }
+
+        const fileName = basename(fileCurrentPath);
+        const destinationFilePath = join(pathToNewDirectory, fileName);
+
+        const isDestinationFilePathExist = await isPathExist(destinationFilePath);
+
+        if (isDestinationFilePathExist) {
+            reject('Impossible to move, such file already exists in a given directory!');
+        } else {
+            const readStream = fs.createReadStream(getPath(fileCurrentPath));
+            const writeStream = fs.createWriteStream(getPath(destinationFilePath));
+
+            const copyStream = readStream.pipe(writeStream);
+
+            readStream.on('error', () =>
+                reject('Move was not successful, check a path and a new name!')
+            );
+            copyStream.on('error', (e) =>
+                reject('Move was not successful, check a path and a new name!')
+            );
+
+            copyStream.on('finish', async () => {
+                try {
+                    await fsPromises.unlink(getPath(fileCurrentPath));
+                    console.log('File was moved successfully!')
+                    resolve();
+                } catch (e) {
+                    reject('File was created by a new destination, an error occured with the old file move!')
+                }
             });
         }
     });
