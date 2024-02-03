@@ -103,6 +103,9 @@ export const handleOperations = new Transform({
                     getOsData(...args);
                     break;
                 }
+                case '.exit':
+                    process.exit();
+                    break;
                 default:
                     console.log(`The operation "${operation}" is unknown!`);
             }
