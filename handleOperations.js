@@ -4,6 +4,7 @@ import {
     openDir,
     list,
     cat,
+    add,
 } from "./operations/index.js";
 
 export const handleOperations = new Transform({
@@ -41,6 +42,15 @@ export const handleOperations = new Transform({
                 case 'cat': {
                     try {
                         await cat(...args);
+                    } catch (e) {
+                        throw new Error(e);
+                    }
+
+                    break;
+                }
+                case 'add': {
+                    try {
+                        await add(...args);
                     } catch (e) {
                         throw new Error(e);
                     }

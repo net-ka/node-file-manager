@@ -28,3 +28,14 @@ export const cat = async pathData => {
         }
     });
 }
+
+export const add = async (fileName) => {
+    const currentDir = process.cwd();
+
+    try {
+        await fsPromises.writeFile(`${currentDir}/${fileName}`, '', { flag: 'wx'});
+        console.log(`File ${fileName} was created successfully!`)
+    } catch (err) {
+        throw new Error(`Impossible to create file ${fileName}`);
+    }
+}
