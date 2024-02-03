@@ -1,6 +1,6 @@
 import fs, { promises as fsPromises } from 'fs';
-import { basename } from 'path';
-import {getPath} from "../utils/index.js";
+import { basename, join } from 'path';
+import {getPath, isPathExist} from "../utils/index.js";
 
 export const cat = async pathData => {
     return new Promise(async (resolve, reject) => {
@@ -45,20 +45,7 @@ export const add = async (fileName) => {
     }
 }
 
-const isPathExist = async path => {
-    let isExist;
-
-    try {
-        await fsPromises.stat(path);
-        isExist = true;
-    } catch (err) {
-        isExist = false;
-    }
-
-    return isExist;
-}
-
-export const rn = async (fileOldPath, fileNewName) => {
+export const rename = async (fileOldPath, fileNewName) => {
     if (!fileOldPath || !fileNewName) {
         throw new Error(`Provide a path and a new name for a file!`);
     }
@@ -79,4 +66,39 @@ export const rn = async (fileOldPath, fileNewName) => {
             throw new Error('Renaming was not successful, check a path and a new name!');
         }
     }
+}
+
+export const copy = async (fileCurrentPath, pathToNewDirectory) => {
+    return new Promise(async (resolve, reject) => {
+        if (!fileCurrentPath || !pathToNewDirectory) {
+            reject(`Provide a current path of entity and a copy path for it!`);
+            return;
+        }
+
+        const fileName = basename(fileCurrentPath);
+        const destinationFilePath = join(pathToNewDirectory, fileName);
+
+        const isDestinationFilePathExist = await isPathExist(destinationFilePath);
+
+        if (isDestinationFilePathExist) {
+            reject('impossible to copy, such file already exists in a given directory!');
+        } else {
+            const readStream = fs.createReadStream(getPath(fileCurrentPath));
+            const writeStream = fs.createWriteStream(getPath(destinationFilePath));
+
+            const copyStream = readStream.pipe(writeStream);
+
+            readStream.on('error', () =>
+                reject('Copy was not successful, check a path and a new name!')
+            );
+            copyStream.on('error', (e) =>
+                reject('Copy was not successful, check a path and a new name!')
+            );
+
+            copyStream.on('finish', () => {
+                console.log('File was copied successfully!')
+                resolve();
+            });
+        }
+    });
 }
