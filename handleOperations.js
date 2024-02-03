@@ -5,6 +5,7 @@ import {
     list,
     cat,
     add,
+    rn,
 } from "./operations/index.js";
 
 export const handleOperations = new Transform({
@@ -51,6 +52,15 @@ export const handleOperations = new Transform({
                 case 'add': {
                     try {
                         await add(...args);
+                    } catch (e) {
+                        throw new Error(e);
+                    }
+
+                    break;
+                }
+                case 'rn': {
+                    try {
+                        await rn(...args);
                     } catch (e) {
                         throw new Error(e);
                     }

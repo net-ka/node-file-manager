@@ -1,2 +1,2 @@
 export { goUp, openDir, list } from './nwd.js';
-export { cat, add } from './files.js';
+export { cat, add, rn } from './files.js';
