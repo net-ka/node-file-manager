@@ -1,5 +1,10 @@
 import {Transform} from "stream";
-import {goUp, openDir, list} from "./operations/index.js";
+import {
+    goUp,
+    openDir,
+    list,
+    cat,
+} from "./operations/index.js";
 
 export const handleOperations = new Transform({
     async transform(chunk, encoding, callback) {
@@ -16,12 +21,34 @@ export const handleOperations = new Transform({
                     break;
                 }
                 case 'cd': {
-                    await openDir(args);
+                    try {
+                        await openDir(...args);
+                    } catch (e) {
+                        throw new Error(e);
+                    }
+
                     break;
                 }
                 case 'ls': {
-                    await list();
+                    try {
+                        await list();
+                    } catch (e) {
+                        throw new Error(e);
+                    }
+
+                    break;
                 }
+                case 'cat': {
+                    try {
+                        await cat(...args);
+                    } catch (e) {
+                        throw new Error(e);
+                    }
+
+                    break;
+                }
+                default:
+                    console.log(`The operation "${operation}" is unknown!`);
             }
         } catch (err) {
             console.log(`Operation ${operation} failed. ${err.message}`);
