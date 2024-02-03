@@ -9,6 +9,7 @@ import {
     copy,
     move,
     remove,
+    getOsData,
 } from "./operations/index.js";
 
 export const handleOperations = new Transform({
@@ -96,6 +97,10 @@ export const handleOperations = new Transform({
                         throw new Error(e);
                     }
 
+                    break;
+                }
+                case 'os': {
+                    getOsData(...args);
                     break;
                 }
                 default:
