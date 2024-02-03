@@ -8,6 +8,7 @@ import {
     rename,
     copy,
     move,
+    remove,
 } from "./operations/index.js";
 
 export const handleOperations = new Transform({
@@ -81,6 +82,16 @@ export const handleOperations = new Transform({
                 case 'mv': {
                     try {
                         await move(...args);
+                    } catch (e) {
+                        throw new Error(e);
+                    }
+
+                    break;
+                }
+
+                case 'rm': {
+                    try {
+                        await remove(...args);
                     } catch (e) {
                         throw new Error(e);
                     }

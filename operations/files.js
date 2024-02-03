@@ -4,6 +4,11 @@ import {getPath, isPathExist} from "../utils/index.js";
 
 export const cat = async pathData => {
     return new Promise(async (resolve, reject) => {
+        if (!pathData) {
+            reject('Invalid input, provide a path!');
+            return;
+        }
+
         const path = getPath(pathData);
 
         try {
@@ -17,22 +22,22 @@ export const cat = async pathData => {
                     resolve();
                 });
 
-                readableSrc.on('error', () => {
-                    reject('Reading failed!');
+                readableSrc.on('error', (e) => {
+                    reject(e);
                 });
             } else {
                 reject('This is not a file!');
             }
 
-        } catch (err) {
-            reject(err.message);
+        } catch (e) {
+            reject(e);
         }
     });
 }
 
 export const add = async (fileName) => {
     if (!fileName) {
-        throw new Error(`Provide a name for a file!`);
+        throw new Error(`Invalid input, provide a name for a file!`);
     }
 
     const currentDir = process.cwd();
@@ -40,14 +45,14 @@ export const add = async (fileName) => {
     try {
         await fsPromises.writeFile(`${currentDir}/${fileName}`, '', { flag: 'wx'});
         console.log(`File ${fileName} was created successfully!`)
-    } catch (err) {
-        throw new Error(`Impossible to create file ${fileName}`);
+    } catch (e) {
+        throw new Error(e);
     }
 }
 
 export const rename = async (fileOldPath, fileNewName) => {
     if (!fileOldPath || !fileNewName) {
-        throw new Error(`Provide a path and a new name for a file!`);
+        throw new Error(`Invalid input, provide a path and a new name for a file!`);
     }
 
     const fileOldName = basename(fileOldPath);
@@ -62,8 +67,8 @@ export const rename = async (fileOldPath, fileNewName) => {
         try {
             await fsPromises.rename(currentPath, destinationPath);
             console.log(`File ${fileOldName} was successfully renamed with ${fileNewName}`);
-        } catch (err) {
-            throw new Error('Renaming was not successful, check a path and a new name!');
+        } catch (e) {
+            throw new Error(e);
         }
     }
 }
@@ -71,7 +76,7 @@ export const rename = async (fileOldPath, fileNewName) => {
 export const copy = async (fileCurrentPath, pathToNewDirectory) => {
     return new Promise(async (resolve, reject) => {
         if (!fileCurrentPath || !pathToNewDirectory) {
-            reject(`Provide a current path of entity and a copy path for it!`);
+            reject(`Invalid input, provide a current path of entity and a copy path for it!`);
             return;
         }
 
@@ -88,11 +93,11 @@ export const copy = async (fileCurrentPath, pathToNewDirectory) => {
 
             const copyStream = readStream.pipe(writeStream);
 
-            readStream.on('error', () =>
-                reject('Copy was not successful, check a path and a new name!')
+            readStream.on('error', (e) =>
+                reject(e)
             );
             copyStream.on('error', (e) =>
-                reject('Copy was not successful, check a path and a new name!')
+                reject(e)
             );
 
             copyStream.on('finish', () => {
@@ -106,7 +111,7 @@ export const copy = async (fileCurrentPath, pathToNewDirectory) => {
 export const move = async (fileCurrentPath, pathToNewDirectory) => {
     return new Promise(async (resolve, reject) => {
         if (!fileCurrentPath || !pathToNewDirectory) {
-            reject(`Provide a current path of entity and a move path for it!`);
+            reject(`Invalid input, provide a current path of entity and a move path for it!`);
             return;
         }
 
@@ -123,11 +128,11 @@ export const move = async (fileCurrentPath, pathToNewDirectory) => {
 
             const copyStream = readStream.pipe(writeStream);
 
-            readStream.on('error', () =>
-                reject('Move was not successful, check a path and a new name!')
+            readStream.on('error', (e) =>
+                reject(e)
             );
             copyStream.on('error', (e) =>
-                reject('Move was not successful, check a path and a new name!')
+                reject(e)
             );
 
             copyStream.on('finish', async () => {
@@ -136,9 +141,23 @@ export const move = async (fileCurrentPath, pathToNewDirectory) => {
                     console.log('File was moved successfully!')
                     resolve();
                 } catch (e) {
-                    reject('File was created by a new destination, an error occured with the old file move!')
+                    reject(e)
                 }
             });
         }
     });
+}
+
+export const remove = async path => {
+    if (!path) {
+        throw new Error(`Invalid input, provide a path for remove!`);
+    }
+
+    try {
+        const currentPath = getPath(path);
+        await fsPromises.unlink(currentPath);
+        console.log(`File by path "${path}" was removed successfully!`);
+    } catch (e) {
+        throw new Error(e);
+    }
 }

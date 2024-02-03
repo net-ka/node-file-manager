@@ -11,6 +11,10 @@ export const goUp = () => {
 }
 
 export const openDir = async pathData => {
+    if (!pathData) {
+        throw new Error("Invalid input, provide a path!");
+    }
+
     try {
         process.chdir(`./${pathData}`);
         await fs.stat(process.cwd());
