@@ -30,6 +30,10 @@ export const cat = async pathData => {
 }
 
 export const add = async (fileName) => {
+    if (!fileName) {
+        throw new Error(`Provide a name for a file!`);
+    }
+
     const currentDir = process.cwd();
 
     try {
