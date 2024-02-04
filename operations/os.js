@@ -7,12 +7,12 @@ export const getOsData = arg => {
 
     switch (arg) {
         case '--EOL': {
-            console.log('🆗', JSON.stringify(EOL));
+            console.log('✅ ', JSON.stringify(EOL));
             break;
         }
         case '--cpus': {
             const data = cpus();
-            console.log(`🆗CPUS number: ${data.length}. Model: ${data[0].model}.`);
+            console.log(`✅ CPUS number: ${data.length}. Model: ${data[0].model}.`);
 
             const speedData = data.map(item => ({
                 'Clock rate': item.speed / 1000 + 'GHz',
@@ -21,15 +21,15 @@ export const getOsData = arg => {
             break;
         }
         case '--homedir': {
-            console.log('🆗', homedir());
+            console.log('✅ ', homedir());
             break;
         }
         case '--username': {
-            console.log('🆗', userInfo().username);
+            console.log('✅ ', userInfo().username);
             break;
         }
         case '--architecture': {
-            console.log('🆗', arch());
+            console.log('✅ ', arch());
             break;
         }
         default: {

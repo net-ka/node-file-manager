@@ -44,7 +44,7 @@ export const add = async (fileName) => {
 
     try {
         await fsPromises.writeFile(`${currentDir}/${fileName}`, '', { flag: 'wx'});
-        console.log(`🆗File ${fileName} was created successfully!`)
+        console.log(`✅ File ${fileName} was created successfully!`)
     } catch (e) {
         throw new Error(e);
     }
@@ -66,7 +66,7 @@ export const rename = async (fileOldPath, fileNewName) => {
     } else {
         try {
             await fsPromises.rename(currentPath, destinationPath);
-            console.log(`🆗File ${fileOldName} was successfully renamed with ${fileNewName}`);
+            console.log(`✅ File ${fileOldName} was successfully renamed with ${fileNewName}`);
         } catch (e) {
             throw new Error(e);
         }
@@ -101,7 +101,7 @@ export const copy = async (fileCurrentPath, pathToNewDirectory) => {
             );
 
             copyStream.on('finish', () => {
-                console.log(`🆗File ${fileName} was copied successfully!`);
+                console.log(`✅ File ${fileName} was copied successfully!`);
                 resolve();
             });
         }
@@ -138,7 +138,7 @@ export const move = async (fileCurrentPath, pathToNewDirectory) => {
             copyStream.on('finish', async () => {
                 try {
                     await fsPromises.unlink(getPath(fileCurrentPath));
-                    console.log(`🆗File ${fileName} was moved successfully!`);
+                    console.log(`✅ File ${fileName} was moved successfully!`);
                     resolve();
                 } catch (e) {
                     reject(e)
@@ -157,7 +157,7 @@ export const remove = async path => {
         const currentPath = getPath(path);
         await fsPromises.unlink(currentPath);
         const fileName = basename(currentPath);
-        console.log(`🆗File ${fileName} was removed successfully!`);
+        console.log(`✅ File ${fileName} was removed successfully!`);
     } catch (e) {
         throw new Error(e);
     }

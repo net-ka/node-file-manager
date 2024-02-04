@@ -16,7 +16,7 @@ export const hash = async pathData => {
         hash.update(sourceData);
         const digest = hash.digest('hex');
 
-        console.log(`🆗Hash was created successfully: ${digest}`);
+        console.log(`✅ Hash was created successfully: ${digest}`);
     } catch (e) {
         throw new Error(e);
     }

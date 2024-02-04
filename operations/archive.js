@@ -22,7 +22,7 @@ export const compress = async (filePath, pathToDestination) => {
             const compressStream = readStream.pipe(brotli).pipe(writeStream);
 
             compressStream.on('finish', () => {
-                console.log('🆗Compressing was done successfully!')
+                console.log('✅ Compressing was done successfully!')
                 resolve();
             });
 
@@ -55,7 +55,7 @@ export const decompress = async (filePath, pathToDestination) => {
             const decompressStream = readStream.pipe(brotli).pipe(writeStream);
 
             decompressStream.on('finish', () => {
-                console.log('🆗Decompressing was done successfully!')
+                console.log('✅ Decompressing was done successfully!')
                 resolve();
             });
 
