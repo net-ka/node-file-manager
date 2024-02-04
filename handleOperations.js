@@ -10,6 +10,7 @@ import {
     move,
     remove,
     getOsData,
+    hash,
 } from "./operations/index.js";
 
 export const handleOperations = new Transform({
@@ -101,6 +102,15 @@ export const handleOperations = new Transform({
                 }
                 case 'os': {
                     getOsData(...args);
+                    break;
+                }
+                case 'hash': {
+                    try {
+                        await hash(...args);
+                    } catch (e) {
+                        throw new Error(e);
+                    }
+
                     break;
                 }
                 case '.exit':
