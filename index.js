@@ -11,13 +11,13 @@ try {
         throw new Error();
     }
 } catch (e) {
-    console.log('Enter your username while starting file manager!');
+    console.log('ℹ️Enter your username while starting file manager!');
     process.exit();
 }
 
 process.chdir(homedir());
-console.log(`Welcome to the File Manager, ${process.env.username}!`);
-console.log(`You are currently in ${process.cwd()}`);
+console.log(`🎉Welcome to the File Manager, ${process.env.username}!`);
+console.log(`📂You are currently in ${process.cwd()}`);
 
 exitHandler();
 

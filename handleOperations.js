@@ -11,6 +11,8 @@ import {
     remove,
     getOsData,
     hash,
+    compress,
+    decompress,
 } from "./operations/index.js";
 
 export const handleOperations = new Transform({
@@ -113,17 +115,35 @@ export const handleOperations = new Transform({
 
                     break;
                 }
+                case 'compress': {
+                    try {
+                        await compress(...args);
+                    } catch (e) {
+                        throw new Error(e);
+                    }
+
+                    break;
+                }
+                case 'decompress': {
+                    try {
+                        await decompress(...args);
+                    } catch (e) {
+                        throw new Error(e);
+                    }
+
+                    break;
+                }
                 case '.exit':
                     process.exit();
                     break;
                 default:
-                    console.log(`The operation "${operation}" is unknown!`);
+                    console.log(`⚠️The operation "${operation}" is unknown!`);
             }
         } catch (err) {
-            console.log(`Operation ${operation} failed. ${err.message}`);
+            console.log(`⚠️Operation ${operation} failed. ${err.message}`);
         }
 
-        console.log(`You are currently in ${process.cwd()}`);
+        console.log(`📂You are currently in ${process.cwd()}`);
         callback();
     },
 });

@@ -17,6 +17,6 @@ export const exitHandler = () => {
             if (item === 'SIGINT') {
                 process.exit();
             }
-            console.log(`Thank you for using File Manager, ${process.env.username}, goodbye!`);
+            console.log(`👋Thank you for using File Manager, ${process.env.username}, goodbye!`);
         }));
 }
